@@ -111,6 +111,7 @@ public class PlayerCombat : MonoBehaviour
             var enemyCombat = enemy.GetComponent<EnemyCombat>();
             enemyCombat.TakeDamage(attackDamage);
             if (!(enemyCombat.currentHealth <= 0)) continue;
+            if (enemyCombat.animator.GetBool("death")) continue;
             if (!enemy.GetComponent<EnemyMove>().enabled) continue;
             enemyCombat.dieSound.Play();
             killMob(enemy);
@@ -123,7 +124,6 @@ public class PlayerCombat : MonoBehaviour
         kills += 1;
         exp += mob.GetComponent<EnemyCombat>().expkill;
         score += 100;
-        Debug.Log(mob.name);
         switch (mob.name)
         {
             case "mob(Clone)":
@@ -136,7 +136,6 @@ public class PlayerCombat : MonoBehaviour
                 spawner.GetComponent<Spawner>().bat3--;
                 break;
         }
-        //spawner.GetComponent<Spawner>().nowTheEnemies -= 1;
     }
 
     public void TakeDamage(float damage) {

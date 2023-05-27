@@ -1,17 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Cameremove : MonoBehaviour
 {
-    public GameObject target;
+    public Transform target;
+    public float smoothSpeed = 0.125f;
+    public Vector3 offset;
     
-    // Start is called before the first frame update
-    
+    public float leftBound;
+    public float rightBound;
+    public float bottomBound;
+    public float topBound;
 
-    // Update is called once per frame
-    private void Update()
+    void FixedUpdate()
     {
-        transform.position = new Vector3(target.transform.position.x, transform.position.y, -10);
+        transform.position = new Vector3(Math.Clamp(transform.position.x,leftBound,rightBound), Math.Clamp(transform.position.y,bottomBound,topBound), transform.position.z);
+        var desiredPosition = target.position + offset;
+        var smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothedPosition;
+        
     }
 }

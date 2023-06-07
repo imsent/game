@@ -19,8 +19,11 @@ public class EnemyCombat : MonoBehaviour
 
     public int expkill;
 
-    
-    
+
+    public Transform TextSpawn;
+    public GameObject damageText;
+
+
     [SerializeField] private AudioSource hitSound;
     [SerializeField] private AudioSource attackSound;
     [SerializeField] public AudioSource dieSound;
@@ -49,8 +52,17 @@ public class EnemyCombat : MonoBehaviour
         
     }
 
-    public void TakeDamage(float damage) {
+    public void TakeDamage(float damage)
+    {
+        if (animator.GetBool("IsDead")) return;
         currentHealth -= damage;
+        
+        var go = Instantiate(damageText, TextSpawn.localPosition, Quaternion.identity);
+        go.transform.SetParent(TextSpawn.transform,true);
+        go.GetComponent<TMPro.TextMeshPro>().SetText("-"+damage.ToString("F0"));
+        go.name = "-" + damage.ToString("F0");
+        Destroy(go,0.5f);
+        
         if (currentHealth <= 0)
         {
             attackDamage = 0;

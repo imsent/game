@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
@@ -18,6 +19,8 @@ public class PauseMenu : MonoBehaviour
     private PlayerMove playerStats;
 
     public Text score;
+
+    public GameObject info;
     
     [SerializeField] private AudioSource selectSound;
     // Start is called before the first frame update
@@ -32,6 +35,7 @@ public class PauseMenu : MonoBehaviour
     void Update()
     {
         if (!Input.GetKeyDown(KeyCode.Escape)) return;
+        if (info.activeSelf) return;
         if (player.GetComponent<Animator>().GetBool("death")) return;
         switch (pauseMenu.activeSelf)
         {
@@ -63,7 +67,16 @@ public class PauseMenu : MonoBehaviour
     public void quit()
     {
         selectSound.Play();
+        playerHealth.saveStatistic(SceneManager.GetActiveScene().buildIndex);
         Application.Quit();
+    }
+
+    public void mainMenu()
+    {
+        selectSound.Play();
+        playerHealth.saveStatistic(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Menu");
     }
 
     public void resume()

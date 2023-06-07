@@ -28,6 +28,7 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
+        if (player.GetComponent<Animator>().GetBool("death")) return;
         timer += Time.deltaTime;
         if ((int) TimeSpan.FromSeconds(timer).TotalMinutes > min)
         {

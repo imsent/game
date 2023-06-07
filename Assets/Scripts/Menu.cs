@@ -7,6 +7,10 @@ public class Menu : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private AudioSource selectSound;
+
+    public GameObject menu;
+    public GameObject Record;
+    public GameObject selectLvl;
     private void Start()
     {
         Cursor.visible = true;
@@ -22,11 +26,15 @@ public class Menu : MonoBehaviour
     public void playGame()
     {
         selectSound.Play();
-        Invoke("play",0.25f);
+        selectLvl.SetActive(true);
+        menu.SetActive(false);
     }
 
-    private void play()
+    public void Recrods()
     {
-        SceneManager.LoadScene("level1");
+        selectSound.Play();
+        Record.SetActive(true);
+        menu.SetActive(false);
     }
+    
 }

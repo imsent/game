@@ -21,6 +21,11 @@ public class HealthBarScript : MonoBehaviour
     public GameObject levelUP;
 
     public GameObject selectBonus;
+
+
+    public Transform TextSpawn;
+    public GameObject TextUp;
+    [SerializeField] private AudioSource error;
     void Start()
     {
         playerHealth = player.GetComponent<PlayerCombat>();
@@ -35,7 +40,7 @@ public class HealthBarScript : MonoBehaviour
     }
 
     private void HpMoneyKills()
-    {
+    { 
         healthFill.fillAmount = playerHealth.currentHealth / playerHealth.maxHealth;
         money.text = playerStats.coins.ToString();
         kills.text = playerHealth.kills.ToString();
@@ -50,8 +55,18 @@ public class HealthBarScript : MonoBehaviour
             levelUP.SetActive(true);
         }
 
-        if (!Input.GetKey(KeyCode.N) || !levelUP.activeSelf || playerStats.coins < 2) return;
-        
+        if (!Input.GetKeyDown(KeyCode.N) || !levelUP.activeSelf) return;
+        if (playerStats.coins < 2)
+        {
+            error.Play();
+            var go = Instantiate(TextUp, TextSpawn.localPosition, Quaternion.identity);
+            go.transform.SetParent(TextSpawn.transform,true);
+            go.GetComponent<TMPro.TextMeshPro>().SetText("Вам не хватает "+ (2-playerStats.coins) + " монет.");
+            go.GetComponent<TMPro.TextMeshPro>().fontSize = 4;
+            go.name = "no money";
+            Destroy(go,0.5f);
+            return;
+        }
         levelUP.SetActive(false);
         selectBonus.SetActive(true);
         playerHealth.exp = 0;

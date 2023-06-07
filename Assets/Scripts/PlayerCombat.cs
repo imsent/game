@@ -35,10 +35,10 @@ public class PlayerCombat : MonoBehaviour
 
 
     public Text time;
+    public Transform TextSpawn;
+    public GameObject damageText;
 
-
-    
-    [SerializeField] private AudioSource hitSound;
+        [SerializeField] private AudioSource hitSound;
     [SerializeField] private AudioSource attack1Sound;
     [SerializeField] private AudioSource attack2Sound;
     [SerializeField] private AudioSource attack3Sound;
@@ -141,6 +141,13 @@ public class PlayerCombat : MonoBehaviour
     public void TakeDamage(float damage) {
         if (animator.GetBool("death")) return;
         currentHealth -= damage;
+        
+        var go = Instantiate(damageText, TextSpawn.localPosition, Quaternion.identity);
+        go.transform.SetParent(TextSpawn.transform,true);
+        go.GetComponent<TMPro.TextMeshPro>().SetText("-"+damage.ToString("F0"));
+        go.name = "-" + damage.ToString("F0");
+        Destroy(go,0.5f);
+        
         if (currentHealth <= 0)
         {
             dieSound.Play();
@@ -159,6 +166,8 @@ public class PlayerCombat : MonoBehaviour
 
     void Die()
     {
+        saveStatistic(SceneManager.GetActiveScene().buildIndex);
+        Data._PrevScene = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene("Death");
     }
     
@@ -210,5 +219,24 @@ public class PlayerCombat : MonoBehaviour
         animator.SetBool("isAttack",false);
         animator.SetBool("isAttack2",false);
         animator.SetBool("isAttack3",false);
+    }
+
+    public void saveStatistic(int number)
+    {
+        var timeMax = TimeSpan.ParseExact(time.text, @"mm\:ss", null).TotalSeconds;
+        if (timeMax > PlayerPrefs.GetInt("time" + number))
+            PlayerPrefs.SetInt("time" + number, (int)timeMax);
+        
+        if (score > PlayerPrefs.GetInt("score" + number))
+            PlayerPrefs.SetInt("score" + number, score);
+        
+        if (kills > PlayerPrefs.GetInt("kills" + number))
+            PlayerPrefs.SetInt("kills" + number, kills);
+
+        var coin = animator.GetComponent<PlayerMove>().coins;
+        if (coin > PlayerPrefs.GetInt("money" + number))
+            PlayerPrefs.SetInt("money" + number, coin);
+        
+        PlayerPrefs.SetInt("kills", PlayerPrefs.GetInt("kills") + kills);
     }
 }

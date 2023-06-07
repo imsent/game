@@ -25,7 +25,7 @@ public class DeathMenu : MonoBehaviour
 
     private void res()
     {
-        SceneManager.LoadScene("level1");
+        SceneManager.LoadScene(Data._PrevScene);
     }
     public void quit()
     {

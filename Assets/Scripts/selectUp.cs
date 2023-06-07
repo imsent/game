@@ -56,11 +56,11 @@ public class selectUp : MonoBehaviour
         strengthPercent = rnd.Next(15, 61);
         abilityPercent = rnd.Next(1, 11);
 
-        hpText.text = "Вы ощущаете, будто здоровы как бык! Прибавляет к здоровью " + hpPercent + "%";
-        jumpText.text = "Вы парите словно перышко! Только не вылетайте с орбиты. Прибавляет к силе прыжка " + jumpPercent + "%";
-        speedText.text = "Ваши ноги быстрее вашего ума, но это не беда! Вы становитесь быстрее на " + speedPercent + "%";
-        strengthText.text = "Прилив сил наполняет ваше тело и вы получаете прибавку к силе! +" + strengthPercent + "%";
-        abilityText.text = "Вы чувствуете, как учитесь правильно пользоваться своей силой. Ускоряет восстановление способности на " + abilityPercent + "%";
+        hpText.text = "Прибавляет к здоровью " + hpPercent + "%";
+        jumpText.text = "Прибавляет к силе прыжка " + jumpPercent + "%";
+        speedText.text = "Вы становитесь быстрее на " + speedPercent + "%";
+        strengthText.text = "Вы получаете прибавку к силе! +" + strengthPercent + "%";
+        abilityText.text = "Ускоряет восстановление способности на " + abilityPercent + "%";
 
     }
     
